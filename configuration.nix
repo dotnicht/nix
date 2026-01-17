@@ -64,6 +64,7 @@
 
   environment.systemPackages = with pkgs; [
   	kitty
+  	alacritty
     vim
   	tmux 
     wget
