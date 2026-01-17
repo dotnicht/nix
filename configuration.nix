@@ -14,7 +14,6 @@
     enable = true;
   	devices = [ "nodev" ];
   	useOSProber = false;
-  	configurationLimit = 10;
   };
 
   boot.kernelParams = [
@@ -27,45 +26,39 @@
   security.tpm2.tctiEnvironment.enable = true;
 
   networking.hostName = "ebobo"; 
-
   networking.networkmanager.enable = true;
+  networking.firewall.enable = true;
 
   time.timeZone = "Europe/Kyiv";
-
+ 
+  services.openssh.enable = true;
+  services.dbus.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
   services.xserver.enable = true;
-
+  services.libinput.enable = true;
   services.xserver.xkb.layout = "us";
   services.xserver.xkb.options = "eurosign:e,caps:escape";
-
   services.printing.enable = true;
-
   services.pulseaudio.enable = true;
   services.pipewire = {
      enable = false;
      pulse.enable = true;
   };
 
-  services.libinput.enable = true;
-
   users.users.nicht = {
      isNormalUser = true;
      extraGroups = [ "wheel" "networkmanager" "tss" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     tree
-  #   ];
+    packages = with pkgs; [
+      tree
+    ];
   };
-
-  programs.firefox.enable = true; 
-  programs.hyprland.enable = true;
-  
-  services.dbus.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
 
   environment.systemPackages = with pkgs; [
   	kitty
   	alacritty
     vim
+    fish
   	tmux 
     wget
   	helix
@@ -83,19 +76,13 @@
   	grim
 	];
 
+  programs.firefox.enable = true; 
+  programs.hyprland.enable = true;
   programs.mtr.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };
-
-  services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
