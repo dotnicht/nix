@@ -8,84 +8,101 @@
   imports =
     [
       ./hardware-configuration.nix
-      # <home-manager/nixos>
+      ./home-manager.nix
     ];
  
-  boot.loader.grub = {
-    enable = true;
-  	devices = [ "nodev" ];
-  	useOSProber = false;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_zen;
+    kernelParams = [
+      "quiet"
+      "loglevel=3"
+    ];
+    loader.grub = {
+      enable = true;
+      devices = [ "nodev" ];
+      useOSProber = false;
+    };
   };
 
-  boot.kernelParams = [
-  	"quiet"
-	  "loglevel=3"
-  ];
-  
-  boot.kernelPackages = pkgs.linuxPackages_zen;
-  
-  security.tpm2.enable = true;
-  security.tpm2.pkcs11.enable = true;
-  security.tpm2.tctiEnvironment.enable = true;
+  security.tpm2 = {
+    enable = true;
+    pkcs11.enable = true;
+    tctiEnvironment.enable = true;
+  };
 
   networking.hostName = "ebobo"; 
   networking.networkmanager.enable = true;
-  networking.firewall.enable = true;
+  networking.firewall = {
+    enable = true;
+    checkReversePath = false;
+  };
 
   time.timeZone = "Europe/Kyiv";
  
+  services.greetd.enable = true;
   services.openssh.enable = true;
   services.dbus.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
-  services.xserver.enable = true;
   services.libinput.enable = true;
-  services.xserver.xkb.layout = "us";
-  services.xserver.xkb.options = "eurosign:e,caps:escape";
   services.printing.enable = true;
   services.pulseaudio.enable = true;
   services.pipewire = {
      enable = false;
      pulse.enable = true;
   };
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "us";
+      options = "eurosign:e,caps:escape";
+    };
+  };
 
   users.users.nicht = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "networkmanager" "tss" ];
+     shell = pkgs.fish;
+     extraGroups = [
+       "wheel"
+       "networkmanager"
+       "tss"
+     ];
      packages = with pkgs; [
        tree
+       signal-desktop
      ];
   };
 
-  # home-manager.users.nicht = { pkgs, ... }: {
-  #   home.stateVersion = "22.11";  
-  #   home.packages = [ ];  
-  # };
-
   environment.systemPackages = with pkgs; [
     kitty
-  	alacritty
+    alacritty
     vim
     fish
-  	tmux 
+    tmux 
     wget
-  	helix
-  	yazi
-  	gitui
-  	git
-  	tpm2-tools
-  	tpm2-tss
-  	cryptsetup
-  	tpm2-tools
-  	tpm2-tss
-  	dunst
-  	wl-clipboard
-  	grim
-  	signal-desktop
-  	fastfetch 
-  	bottom
-	];
+    helix
+    yazi
+    gitui
+    git
+    tpm2-tools
+    tpm2-tss
+    cryptsetup
+    tpm2-tools
+    tpm2-tss
+    dunst
+    wl-clipboard
+    grim
+    fastfetch 
+    bottom
+    anyrun
+    zellij
+    uwsm
+    protonvpn-gui
+    wireguard-tools
+    starship
+    rustup
+    dotnet-sdk
+  ];
 
+  programs.regreet.enable = true;
   programs.fish.enable = true;
   programs.firefox.enable = true; 
   programs.hyprland.enable = true;
@@ -95,17 +112,19 @@
     enableSSHSupport = true;
   };
 
-  fonts.fontconfig.useEmbeddedBitmaps = true;
   fonts.fontDir.enable = true;
-  fonts.fontconfig.enable = true;
+  fonts.fontconfig = {
+    enable = true;
+    useEmbeddedBitmaps = true;
+  };
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.droid-sans-mono
     nerd-fonts.noto
     nerd-fonts.hack
     nerd-fonts.ubuntu
-  ];    
-  
+  ];
+
   system.copySystemConfiguration = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -129,4 +148,3 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
 }
-
