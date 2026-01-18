@@ -8,6 +8,7 @@
   imports =
     [
       ./hardware-configuration.nix
+      # <home-manager/nixos>
     ];
  
   boot.loader.grub = {
@@ -48,14 +49,19 @@
 
   users.users.nicht = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "networkmanager" "tss" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      tree
-    ];
+     extraGroups = [ "wheel" "networkmanager" "tss" ];
+     packages = with pkgs; [
+       tree
+     ];
   };
 
+  # home-manager.users.nicht = { pkgs, ... }: {
+  #   home.stateVersion = "22.11";  
+  #   home.packages = [ ];  
+  # };
+
   environment.systemPackages = with pkgs; [
-  	kitty
+    kitty
   	alacritty
     vim
     fish
@@ -70,10 +76,11 @@
   	cryptsetup
   	tpm2-tools
   	tpm2-tss
-  	waybar
   	dunst
   	wl-clipboard
   	grim
+  	signal-desktop
+  	fastfetch 
 	];
 
   programs.firefox.enable = true; 
@@ -84,10 +91,18 @@
     enableSSHSupport = true;
   };
 
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
+  fonts.fontconfig.useEmbeddedBitmaps = true;
+  fonts.fontDir.enable = true;
+  fonts.fontconfig.enable = true;
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.noto
+    nerd-fonts.hack
+    nerd-fonts.ubuntu
+  ];    
+  
+  system.copySystemConfiguration = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
