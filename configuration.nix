@@ -22,6 +22,8 @@
 	  "loglevel=3"
   ];
   
+  boot.kernelPackages = pkgs.linuxPackages_zen;
+  
   security.tpm2.enable = true;
   security.tpm2.pkcs11.enable = true;
   security.tpm2.tctiEnvironment.enable = true;
@@ -81,8 +83,10 @@
   	grim
   	signal-desktop
   	fastfetch 
+  	bottom
 	];
 
+  programs.fish.enable = true;
   programs.firefox.enable = true; 
   programs.hyprland.enable = true;
   programs.mtr.enable = true;
