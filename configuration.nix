@@ -2,15 +2,19 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./home-manager.nix
-    ];
- 
+  imports = [
+    ./hardware-configuration.nix
+    ./home-manager.nix
+  ];
+
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
@@ -30,45 +34,50 @@
     tctiEnvironment.enable = true;
   };
 
-  networking.hostName = "ebobo"; 
-  networking.networkmanager.enable = true;
-  networking.firewall = {
-    enable = true;
-    checkReversePath = false;
+  networking = {
+    hostName = "ebobo";
+    networkmanager.enable = true;
+    firewall = {
+      enable = true;
+      checkReversePath = false;
+    };
   };
 
   time.timeZone = "Europe/Kyiv";
 
-  services.greetd.enable = true;
-  services.openssh.enable = true;
-  services.dbus.enable = true;
-  services.libinput.enable = true;
-  services.printing.enable = true;
-  services.pulseaudio.enable = true;
-  services.pipewire = {
-     enable = false;
-     pulse.enable = true;
-  };
-  services.xserver = {
-    enable = true;
-    xkb = {
-      layout = "us";
-      options = "eurosign:e,caps:escape";
+  services = {
+    udev.packages = [ pkgs.nitrokey-udev-rules ];
+    greetd.enable = true;
+    openssh.enable = true;
+    dbus.enable = true;
+    libinput.enable = true;
+    printing.enable = true;
+    pulseaudio.enable = true;
+    pipewire = {
+      enable = false;
+      pulse.enable = true;
+    };
+    xserver = {
+      enable = true;
+      xkb = {
+        layout = "us";
+        options = "eurosign:e,caps:escape";
+      };
     };
   };
 
   users.users.nicht = {
-     isNormalUser = true;
-     shell = pkgs.fish;
-     extraGroups = [
-       "wheel"
-       "networkmanager"
-       "tss"
-     ];
-     packages = with pkgs; [
-       tree
-       signal-desktop
-     ];
+    isNormalUser = true;
+    shell = pkgs.fish;
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "tss"
+    ];
+    packages = with pkgs; [
+      tree
+      signal-desktop
+    ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -76,7 +85,7 @@
     alacritty
     vim
     fish
-    tmux 
+    tmux
     wget
     helix
     yazi
@@ -90,7 +99,7 @@
     dunst
     wl-clipboard
     grim
-    fastfetch 
+    fastfetch
     bottom
     anyrun
     zellij
@@ -102,32 +111,39 @@
     spotify
   ];
 
-  programs.regreet.enable = true;
-  programs.fish.enable = true;
-  programs.firefox.enable = true; 
-  programs.hyprland.enable = true;
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+  programs = {
+    regreet.enable = true;
+    fish.enable = true;
+    firefox.enable = true;
+    hyprland.enable = true;
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
 
-  fonts.fontDir.enable = true;
-  fonts.fontconfig = {
-    enable = true;
-    useEmbeddedBitmaps = true;
+  fonts = {
+    fontDir.enable = true;
+    fontconfig = {
+      enable = true;
+      useEmbeddedBitmaps = true;
+    };
+    packages = with pkgs; [
+      nerd-fonts.fira-code
+      nerd-fonts.droid-sans-mono
+      nerd-fonts.noto
+      nerd-fonts.hack
+      nerd-fonts.ubuntu
+    ];
   };
-  fonts.packages = with pkgs; [
-    nerd-fonts.fira-code
-    nerd-fonts.droid-sans-mono
-    nerd-fonts.noto
-    nerd-fonts.hack
-    nerd-fonts.ubuntu
-  ];
 
   system.copySystemConfiguration = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nixpkgs.config.allowUnfree = true;
 
