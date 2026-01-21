@@ -52,10 +52,9 @@
     dbus.enable = true;
     libinput.enable = true;
     printing.enable = true;
-    pulseaudio.enable = true;
     pipewire = {
-      enable = false;
-      pulse.enable = true;
+      enable = true;
+      pulse.enable = false;
     };
     xserver = {
       enable = true;
@@ -77,14 +76,13 @@
     packages = with pkgs; [
       tree
       signal-desktop
+      spotify
+      protonvpn-gui
     ];
   };
 
   environment.systemPackages = with pkgs; [
-    kitty
     alacritty
-    vim
-    fish
     tmux
     wget
     helix
@@ -94,8 +92,6 @@
     tpm2-tools
     tpm2-tss
     cryptsetup
-    tpm2-tools
-    tpm2-tss
     dunst
     wl-clipboard
     grim
@@ -104,11 +100,12 @@
     anyrun
     zellij
     uwsm
-    protonvpn-gui
     wireguard-tools
     starship
     rustup
-    spotify
+    brightnessctl
+    flashrom
+    hyprcursor
   ];
 
   programs = {
@@ -146,6 +143,11 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

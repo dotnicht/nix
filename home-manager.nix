@@ -7,8 +7,10 @@ in
     (import "${home-manager}/nixos")
   ];
 
-  home-manager.users.nicht = { pkgs, ... }: {
-    home.stateVersion = "22.11";
-    home.packages = [ ];
-  };
+  home-manager.users.nicht =
+    { pkgs, ... }:
+    {
+      programs.home-manager.enable = true;
+      home.stateVersion = "22.11";
+    };
 }
