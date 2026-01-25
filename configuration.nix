@@ -12,7 +12,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./home-manager.nix
+    # ./home-manager.nix
   ];
 
   boot = {
@@ -25,6 +25,8 @@
       enable = true;
       devices = [ "nodev" ];
       useOSProber = false;
+      efiSupport = false;
+      copyKernels = true;
     };
   };
 
@@ -32,6 +34,11 @@
     enable = true;
     pkcs11.enable = true;
     tctiEnvironment.enable = true;
+  };
+
+  security.pam.services = {
+    login.u2fAuth = true;
+    sudo.u2fAuth = true;
   };
 
   networking = {
@@ -46,7 +53,10 @@
   time.timeZone = "Europe/Kyiv";
 
   services = {
-    udev.packages = [ pkgs.nitrokey-udev-rules ];
+    udev.packages = [
+      pkgs.nitrokey-udev-rules
+      pkgs.yubikey-personalization
+    ];
     greetd.enable = true;
     openssh.enable = true;
     dbus.enable = true;
@@ -143,6 +153,8 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+
+  environment.variables.EDITOR = "hx";
 
   hardware.bluetooth = {
     enable = true;
