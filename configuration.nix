@@ -16,7 +16,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
+    # kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
       "quiet"
       "loglevel=3"
@@ -30,15 +30,16 @@
     };
   };
 
-  security.tpm2 = {
-    enable = true;
-    pkcs11.enable = true;
-    tctiEnvironment.enable = true;
-  };
-
-  security.pam.services = {
-    login.u2fAuth = true;
-    sudo.u2fAuth = true;
+  security = {
+    tpm2 = {
+      enable = true;
+      pkcs11.enable = true;
+      tctiEnvironment.enable = true;
+    };
+    pam.services = {
+      login.u2fAuth = true;
+      sudo.u2fAuth = true;
+    };
   };
 
   networking = {
