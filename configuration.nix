@@ -16,7 +16,7 @@
   ];
 
   boot = {
-    # kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
       "quiet"
       "loglevel=3"
@@ -27,6 +27,7 @@
       useOSProber = false;
       efiSupport = false;
       copyKernels = true;
+      configurationLimit = 30;
     };
   };
 
@@ -54,10 +55,6 @@
   time.timeZone = "Europe/Kyiv";
 
   services = {
-    udev.packages = [
-      pkgs.nitrokey-udev-rules
-      pkgs.yubikey-personalization
-    ];
     greetd.enable = true;
     openssh.enable = true;
     dbus.enable = true;
@@ -74,6 +71,10 @@
         options = "eurosign:e,caps:escape";
       };
     };
+    udev.packages = with pkgs; [
+      nitrokey-udev-rules
+      yubikey-personalization
+    ];
   };
 
   users.users.nicht = {
@@ -92,32 +93,40 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    alacritty
-    tmux
-    wget
-    helix
-    yazi
-    gitui
-    git
-    tpm2-tools
-    tpm2-tss
-    cryptsetup
-    dunst
-    wl-clipboard
-    grim
-    fastfetch
-    bottom
-    anyrun
-    zellij
-    uwsm
-    wireguard-tools
-    starship
-    rustup
-    brightnessctl
-    flashrom
-    # hyprcursor
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      alacritty
+      tmux
+      wget
+      helix
+      yazi
+      gitui
+      git
+      tpm2-tools
+      tpm2-tss
+      cryptsetup
+      dunst
+      wl-clipboard
+      grim
+      fastfetch
+      bottom
+      anyrun
+      zellij
+      uwsm
+      wireguard-tools
+      starship
+      rustup
+      brightnessctl
+      flashrom
+      hyprcursor
+      rclone
+    ];
+    variables = {
+        EDITOR = "hx";
+        # HYPRCURSOR_THEME = "Adwaita";
+        # HYPRCURSOR_SIZE = 48;
+      };
+  };
 
   programs = {
     regreet.enable = true;
@@ -137,16 +146,14 @@
       enable = true;
       useEmbeddedBitmaps = true;
     };
-    packages = with pkgs; [
-      nerd-fonts.fira-code
-      nerd-fonts.droid-sans-mono
-      nerd-fonts.noto
-      nerd-fonts.hack
-      nerd-fonts.ubuntu
+    packages = with pkgs.nerd-fonts; [
+      fira-code
+      droid-sans-mono
+      noto
+      hack
+      ubuntu
     ];
   };
-
-  system.copySystemConfiguration = true;
 
   nix.settings.experimental-features = [
     "nix-command"
@@ -155,12 +162,11 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.variables.EDITOR = "hx";
-
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
   };
 
+  system.copySystemConfiguration = true;
   system.stateVersion = "25.11";
 }
