@@ -55,7 +55,25 @@
   time.timeZone = "Europe/Kyiv";
 
   services = {
-    greetd.enable = true;
+    greetd = {
+      enable = true;
+      # settings = rec {
+      #   initial_session = {
+      #     command = "start-hyprland -- -c /etc/greetd/hypr.conf";
+      #     user = "greeter";
+      #   };
+      #   default_session = initial_session;
+      # };
+    };
+    desktopManager.cosmic.enable = true;
+    displayManager = {
+      cosmic-greeter.enable = true;
+      autoLogin = {
+        enable = true;
+        user = "nicht";
+      };
+    };
+    # system76-scheduler.enable = true;
     openssh.enable = true;
     dbus.enable = true;
     libinput.enable = true;
@@ -96,48 +114,58 @@
   environment = {
     systemPackages = with pkgs; [
       alacritty
-      tmux
-      wget
-      helix
-      yazi
-      gitui
-      git
-      tpm2-tools
-      tpm2-tss
+      anyrun
+      bottom
+      brightnessctl
       cryptsetup
       dunst
-      wl-clipboard
-      grim
       fastfetch
-      bottom
-      anyrun
-      zellij
-      uwsm
-      wireguard-tools
-      starship
-      rustup
-      brightnessctl
       flashrom
+      git
+      gitui
+      grim
+      helix
       hyprcursor
+      opensc
       rclone
+      pynitrokey
+      rustup
+      starship
+      tmux
+      tpm2-tools
+      tpm2-tss
+      wget
+      wireguard-tools
+      wl-clipboard
+      yazi
+      zellij
     ];
     variables = {
-        EDITOR = "hx";
-        # HYPRCURSOR_THEME = "Adwaita";
-        # HYPRCURSOR_SIZE = 48;
-      };
+      EDITOR = "hx";
+      # HYPRCURSOR_THEME = "Adwaita";
+      # HYPRCURSOR_SIZE = 48;
+    };
   };
 
   programs = {
     regreet.enable = true;
     fish.enable = true;
     firefox.enable = true;
-    hyprland.enable = true;
     mtr.enable = true;
+    hyprland = {
+      enable = true;
+      withUWSM = true;
+      xwayland.enable = true;
+    };
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
   };
 
   fonts = {
