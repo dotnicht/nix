@@ -65,15 +65,15 @@
       #   default_session = initial_session;
       # };
     };
+    # displayManager = {
+    #   cosmic-greeter.enable = true;
+    #   autoLogin = {
+    #     enable = true;
+    #     user = "nicht";
+    #   };
+    # };
     desktopManager.cosmic.enable = true;
-    displayManager = {
-      cosmic-greeter.enable = true;
-      autoLogin = {
-        enable = true;
-        user = "nicht";
-      };
-    };
-    # system76-scheduler.enable = true;
+    system76-scheduler.enable = true;
     openssh.enable = true;
     dbus.enable = true;
     libinput.enable = true;
@@ -127,9 +127,9 @@
       helix
       hyprcursor
       opensc
-      rclone
       pynitrokey
       rustup
+      rclone
       starship
       tmux
       tpm2-tools
