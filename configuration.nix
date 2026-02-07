@@ -12,7 +12,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # ./home-manager.nix
+    ./home-manager.nix
   ];
 
   boot = {
