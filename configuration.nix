@@ -57,13 +57,16 @@
   services = {
     greetd = {
       enable = true;
-      # settings = rec {
-      #   initial_session = {
-      #     command = "start-hyprland -- -c /etc/greetd/hypr.conf";
-      #     user = "greeter";
-      #   };
-      #   default_session = initial_session;
-      # };
+      settings = {
+        initial_session = {
+          command = "start-hyprland";
+          user = "nicht";
+        };
+        default_session = {
+          command = "start-hyprland";
+          user = "nicht";
+        };
+      };
     };
     # displayManager = {
     #   cosmic-greeter.enable = true;
@@ -77,6 +80,7 @@
     openssh.enable = true;
     dbus.enable = true;
     libinput.enable = true;
+    pcscd.enable = true;
     printing.enable = true;
     pipewire = {
       enable = true;
@@ -90,6 +94,7 @@
       };
     };
     udev.packages = with pkgs; [
+      nitrokey-app2
       nitrokey-udev-rules
       yubikey-personalization
     ];
@@ -127,6 +132,8 @@
       helix
       hyprcursor
       opensc
+      pandoc
+      tectonic
       pynitrokey
       rustup
       rclone
@@ -139,6 +146,11 @@
       wl-clipboard
       yazi
       zellij
+      nitrokey-app2
+      opensc
+      ccid
+      pcsc-tools
+      pcsclite
     ];
     variables = {
       EDITOR = "hx";

@@ -10,8 +10,11 @@ in
   home-manager.users.nicht =
     { pkgs, ... }:
     {
-      programs.home-manager.enable = true;
-      programs.wezterm.enable = true;
+      programs = {
+        home-manager.enable = true;
+        wezterm.enable = true;
+      };
+
       home.stateVersion = "22.11";
     };
 }
