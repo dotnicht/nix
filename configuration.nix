@@ -58,23 +58,12 @@
     greetd = {
       enable = true;
       settings = {
-        initial_session = {
-          command = "start-hyprland";
-          user = "nicht";
-        };
         default_session = {
           command = "start-hyprland";
           user = "nicht";
         };
       };
     };
-    # displayManager = {
-    #   cosmic-greeter.enable = true;
-    #   autoLogin = {
-    #     enable = true;
-    #     user = "nicht";
-    #   };
-    # };
     desktopManager.cosmic.enable = true;
     system76-scheduler.enable = true;
     openssh.enable = true;
@@ -125,12 +114,9 @@
       cryptsetup
       dunst
       fastfetch
-      flashrom
-      git
       gitui
       grim
       helix
-      hyprcursor
       opensc
       pandoc
       tectonic
@@ -154,15 +140,12 @@
     ];
     variables = {
       EDITOR = "hx";
-      # HYPRCURSOR_THEME = "Adwaita";
-      # HYPRCURSOR_SIZE = 48;
     };
   };
 
   programs = {
     regreet.enable = true;
     fish.enable = true;
-    firefox.enable = true;
     mtr.enable = true;
     hyprland = {
       enable = true;
