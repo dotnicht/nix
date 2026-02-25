@@ -144,7 +144,7 @@
   };
 
   programs = {
-    regreet.enable = true;
+    # regreet.enable = true;
     fish.enable = true;
     mtr.enable = true;
     hyprland = {
